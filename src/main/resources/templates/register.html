@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register - Contact Manager</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .card { background: white; padding: 40px; border-radius: 12px; width: 420px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1 { color: #2563eb; text-align: center; margin-bottom: 8px; }
+        p { text-align: center; color: #666; margin-bottom: 24px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; color: #444; }
+        input { width: 100%; padding: 10px 14px; border: 1.5px solid #d1d5db; border-radius: 8px; margin-bottom: 4px; font-size: 0.95rem; }
+        .error { color: #dc2626; font-size: 0.82rem; margin-bottom: 12px; display: block; }
+        button { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 8px; }
+        button:hover { background: #1d4ed8; }
+        .alert-error { background: #fee2e2; color: #dc2626; padding: 10px; border-radius: 8px; margin-bottom: 16px; text-align: center; }
+        .footer { text-align: center; margin-top: 16px; color: #666; }
+        .footer a { color: #2563eb; text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>📋 Contact Manager</h1>
+    <p>Create a new account</p>
+
+    <div th:if="${errorMsg}" class="alert-error" th:text="${errorMsg}"></div>
+    <div th:if="${emailError}" class="alert-error" th:text="${emailError}"></div>
+
+    <form th:action="@{/register}" th:object="${user}" method="post">
+        <label>Full Name</label>
+        <input type="text" th:field="*{name}" placeholder="Enter your name"/>
+        <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+
+        <label>Email</label>
+        <input type="email" th:field="*{email}" placeholder="Enter your email"/>
+        <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+
+        <label>Password</label>
+        <input type="password" th:field="*{password}" placeholder="Min 6 characters"/>
+        <span class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+
+        <button type="submit">Register</button>
+    </form>
+    <div class="footer">
+        Already have an account? <a th:href="@{/login}">Login here</a>
+    </div>
+</div>
+</body>
+</html>

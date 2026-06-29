@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login - Contact Manager</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .card { background: white; padding: 40px; border-radius: 12px; width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1 { color: #2563eb; text-align: center; margin-bottom: 8px; }
+        p { text-align: center; color: #666; margin-bottom: 24px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; color: #444; }
+        input { width: 100%; padding: 10px 14px; border: 1.5px solid #d1d5db; border-radius: 8px; margin-bottom: 16px; font-size: 0.95rem; }
+        button { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+        button:hover { background: #1d4ed8; }
+        .alert-error { background: #fee2e2; color: #dc2626; padding: 10px; border-radius: 8px; margin-bottom: 16px; text-align: center; }
+        .alert-success { background: #dcfce7; color: #15803d; padding: 10px; border-radius: 8px; margin-bottom: 16px; text-align: center; }
+        .footer { text-align: center; margin-top: 16px; color: #666; }
+        .footer a { color: #2563eb; text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>📋 Contact Manager</h1>
+    <p>Sign in to your account</p>
+
+    <div th:if="${param.error}" class="alert-error">Invalid email or password!</div>
+    <div th:if="${param.logout}" class="alert-success">You have been logged out.</div>
+    <div th:if="${param.registered}" class="alert-success">Registration successful! Please login.</div>
+
+    <form th:action="@{/login}" method="post">
+        <label>Email</label>
+        <input type="email" name="username" placeholder="Enter your email" required/>
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Enter your password" required/>
+        <button type="submit">Login</button>
+    </form>
+    <div class="footer">
+        Don't have an account? <a th:href="@{/register}">Register here</a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/springsecurity6">
+<head>
+    <title>My Contacts</title>
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="nav-brand">📋 Contact Manager</div>
+    <div class="nav-right">
+        <span>👤 <span sec:authentication="name"></span></span>
+        <a th:href="@{/logout}" class="btn btn-outline">Logout</a>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container">
+
+    <!-- Flash Messages -->
+    <div th:if="${successMsg}" class="alert alert-success" th:text="${successMsg}"></div>
+
+    <!-- Header Row -->
+    <div class="page-header">
+        <div>
+            <h2>My Contacts <span class="badge" th:text="${totalContacts}"></span></h2>
+        </div>
+        <a th:href="@{/contacts/add}" class="btn btn-primary">+ Add Contact</a>
+    </div>
+
+    <!-- Search Bar -->
+    <form th:action="@{/contacts}" method="get" class="search-form">
+        <input type="text" name="keyword" th:value="${keyword}"
+               placeholder="Search by name or phone..."/>
+        <button type="submit" class="btn btn-secondary">Search</button>
+        <a th:if="${keyword}" th:href="@{/contacts}" class="btn btn-outline">Clear</a>
+    </form>
+
+    <!-- Empty State -->
+    <div th:if="${#lists.isEmpty(contacts)}" class="empty-state">
+        <p>🔍 No contacts found.</p>
+        <a th:href="@{/contacts/add}" class="btn btn-primary">Add your first contact</a>
+    </div>
+
+    <!-- Contacts Table -->
+    <table th:if="${not #lists.isEmpty(contacts)}" class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Category</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="contact, status : ${contacts}">
+            <td th:text="${status.count}"></td>
+            <td th:text="${contact.name}"></td>
+            <td th:text="${contact.email}"></td>
+            <td th:text="${contact.phone}"></td>
+            <td>
+                <span th:if="${contact.category}" class="tag" th:text="${contact.category}"></span>
+            </td>
+            <td class="actions">
+                <a th:href="@{/contacts/view/{id}(id=${contact.id})}" class="btn btn-sm btn-info">View</a>
+                <a th:href="@{/contacts/edit/{id}(id=${contact.id})}" class="btn btn-sm btn-warning">Edit</a>
+                <a th:href="@{/contacts/delete/{id}(id=${contact.id})}" class="btn btn-sm btn-danger"
+                   onclick="return confirm('Delete this contact?')">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script th:src="@{/static/js/app.js}"></script>
+</body>
+</html>

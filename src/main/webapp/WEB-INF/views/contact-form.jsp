@@ -1,0 +1,80 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${pageTitle} - Contact Manager</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-brand">📋 Contact Manager</div>
+    <div class="nav-right">
+        <a href="${pageContext.request.contextPath}/contacts" class="btn btn-outline">← Back</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="form-card">
+        <h2>${pageTitle}</h2>
+
+        <c:set var="isEdit" value="${not empty contact.id}"/>
+        <c:set var="action" value="${isEdit ?
+            pageContext.request.contextPath.concat('/contacts/edit/').concat(contact.id) :
+            pageContext.request.contextPath.concat('/contacts/add')}"/>
+
+        <form:form action="${action}" method="post" modelAttribute="contact">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <form:input path="name" placeholder="Contact name"/>
+                    <form:errors path="name" cssClass="field-error"/>
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number *</label>
+                    <form:input path="phone" placeholder="10-digit phone number"/>
+                    <form:errors path="phone" cssClass="field-error"/>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Email</label>
+                    <form:input path="email" type="email" placeholder="Email address"/>
+                    <form:errors path="email" cssClass="field-error"/>
+                </div>
+
+                <div class="form-group">
+                    <label>Category</label>
+                    <form:select path="category">
+                        <form:option value="">-- Select Category --</form:option>
+                        <form:option value="Friend">Friend</form:option>
+                        <form:option value="Family">Family</form:option>
+                        <form:option value="Work">Work</form:option>
+                        <form:option value="Other">Other</form:option>
+                    </form:select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Address</label>
+                <form:textarea path="address" rows="3" placeholder="Street, City, State"/>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    ${isEdit ? 'Update Contact' : 'Save Contact'}
+                </button>
+                <a href="${pageContext.request.contextPath}/contacts" class="btn btn-outline">Cancel</a>
+            </div>
+
+        </form:form>
+    </div>
+</div>
+
+</body>
+</html>
